@@ -25,11 +25,20 @@ class ApiTests(unittest.TestCase):
         cls.thread = threading.Thread(target=cls.httpd.serve_forever, daemon=True)
         cls.thread.start()
         cls.base = f"http://127.0.0.1:{cls.httpd.server_address[1]}"
+
     @classmethod
     def tearDownClass(cls):
-        cls.httpd.shutdown(); cls.httpd.server_close(); cls.thread.join(timeout=2)
-        server.DB = cls.old_db; cls.tmp.cleanup()
+        cls.httpd.shutdown()
+        cls.httpd.server_close()
+        cls.thread.join(timeout=5)
+        server.DB = cls.old_db
+        import gc
+        gc.collect()
+        cls.tmp.cleanup()
+
     def get(self, path):
+        with urllib.request.urlopen(self.base + path, timeout=3) as response:
+            return response.status, response.headers, json.loads(response.read())
         with urllib.request.urlopen(self.base + path, timeout=3) as response:
             return response.status, response.headers, json.loads(response.read())
     def post(self, path, body=b"{}"):

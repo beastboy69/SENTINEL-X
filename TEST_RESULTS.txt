@@ -1,0 +1,27 @@
+SENTINEL-X verification record
+
+Automated test command:
+  python -m unittest discover -s tests -v
+
+Result:
+  11 tests passed.
+
+Coverage:
+  - Four deterministic rule mappings and one negative fixture
+  - Clear test-scope disclaimer
+  - Health API response and security response header
+  - Dashboard, privacy page, terms page, and favicon HTTP routes
+  - Re-running triage does not create duplicate findings
+  - Malformed event limit returns HTTP 400
+  - Malformed JSON returns HTTP 400
+
+Additional checks:
+  - Python source compilation passed.
+  - Live local-server smoke test passed for health, dashboard, legal pages,
+    favicon, summary, events, and findings routes.
+  - Browser JavaScript syntax check passed when Node.js was available.
+
+Important scope limitation:
+  These checks do not prove zero bugs, real-world detection accuracy, production
+  security, custom-domain configuration, HTTPS, or public deployment readiness.
+  This build uses synthetic events and is intended for a controlled hackathon demo.
